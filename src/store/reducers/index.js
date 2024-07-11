@@ -28,8 +28,9 @@ const indexReducer = (state = initialState,action) => {
             const currentMovie = state.movies[state.index];
             return{...state,
                 favMovies: [...state.favMovies,currentMovie], 
-                movies: state.movies.filter((movie) => movie.id != currentMovie.id)
-             };
+                movies: state.movies.filter((movie) => movie.id != currentMovie.id),
+                index: state.movies.length - state.index == 1 ? state.index == 0 ? 0: state.index -1  : state.index
+            };
         case REMOVE_LIST:
             const movieToRemove = state.favMovies.find((movie) => movie.id === action.payload);
             return {...state,
