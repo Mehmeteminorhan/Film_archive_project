@@ -1,6 +1,7 @@
+/* eslint-disable no-case-declarations */
 
 import { movies } from "../../data"
-import { ADD_LIST, NEXT_MOVIE, PREV_MOVIE } from "../actions"
+import { ADD_LIST, NEXT_MOVIE, PREV_MOVIE, REMOVE_LIST } from "../actions"
 
 const initialState = {
     movies:movies,
@@ -24,7 +25,17 @@ const indexReducer = (state = initialState,action) => {
                 return{...state,index:state.index-1};
             }
         case ADD_LIST:
-            return{...state,favMovies: [...state.favMovies,movies[action.payload]]}
+            const currentMovie = state.movies[state.index];
+            return{...state,
+                favMovies: [...state.favMovies,currentMovie], 
+                movies: state.movies.filter((movie) => movie.id != currentMovie.id)
+             };
+        case REMOVE_LIST:
+            const movieToRemove = state.favMovies.find((movie) => movie.id === action.payload);
+            return {...state,
+                favMovies: state.favMovies.filter((movie) => movie.id != action.payload),
+                movies: [...state.movies,movieToRemove]
+            }
         default:
             return state;
     } 
