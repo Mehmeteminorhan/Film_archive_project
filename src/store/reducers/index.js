@@ -1,6 +1,6 @@
 
 import { movies } from "../../data"
-import { NEXT_MOVIE, PREV_MOVIE } from "../actions"
+import { ADD_LIST, NEXT_MOVIE, PREV_MOVIE } from "../actions"
 
 const initialState = {
     movies:movies,
@@ -12,9 +12,19 @@ const initialState = {
 const indexReducer = (state = initialState,action) => {
     switch (action.type){
         case NEXT_MOVIE:
-            return{...state,index:state.index+1};
+            if(state.index+1 === movies.length){
+                return state;
+            }else{
+                return {...state,index:state.index+1};
+            }
         case PREV_MOVIE:
-            return {...state,index:state.index-1};
+            if(state.index === 0){
+                return state;
+            }else{
+                return{...state,index:state.index-1};
+            }
+        case ADD_LIST:
+            return{...state,favMovies: [...state.favMovies,movies[action.payload]]}
         default:
             return state;
     } 
